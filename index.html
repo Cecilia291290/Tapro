@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate QR Code for Prepopulated Google Form with Date and Time</title>
+  <!-- Correct CDN for the 'qrcode' library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <!-- Auto-refresh every 60 seconds -->
+  <meta http-equiv="refresh" content="60">
+</head>
+<body>
+
+  <h1>Quét mã QR bên dưới để chấm công</h1>
+
+  <!-- Display the pre-populated QR code -->
+  <canvas id="qrCodeCanvas"></canvas><br><br>
+
+  <script>
+    // Function to generate the QR code
+    function generateQRCode() {
+      // Step 1: Get current date and time values
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      const formattedTime = today.toTimeString().split(' ')[0].slice(0, 5); // Format: HH:MM
+
+      // Step 2: Your Google Form URL (replace with your form URL)
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfIes-Rw7GLsaJSJ9HMU8PsnsyQAedl1WkR7XkZt000lvxE3w/viewform";
+
+      // Step 3: Prepopulate the Google Form with the current date and time values
+      // Replace entry.123456 with the actual entry ID for the Date field in your form
+      // Replace entry.654321 with the actual entry ID for the Time field in your form
+      const prepopulatedUrl = `${formUrl}?usp=pp_url&entry.624859888=${formattedDate}+${formattedTime}`;
+
+      // Step 4: Generate QR Code for the pre-populated form URL
+      QRCode.toCanvas(document.getElementById('qrCodeCanvas'), prepopulatedUrl, function (error) {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log('QR Code generated successfully!');
+        }
+      });
+    }
+
+    // Automatically generate the QR code when the page loads
+    window.onload = generateQRCode;
+  </script>
+
+</body>
+</html>
